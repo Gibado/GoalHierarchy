@@ -9,6 +9,17 @@ class HierarchyModel {
         }
         return pNode.addItem(title);
     }
+    getItemList() {
+        return this.root.listWide();
+    }
+    findItemById(id) {
+        for (const item of this.getItemList()) {
+            if (id == item.data.id) {
+                return item;
+            }
+        }
+        return null;
+    }
 }
 
 // Data structures
@@ -18,6 +29,7 @@ const TypeEnum = {
 }
 class GoalItem {
     constructor(title, priority) {
+        this.id = Math.random();
         this.title = title;
         this.priority = priority;
     }
@@ -27,6 +39,12 @@ class GoalItem {
             result += " (" + this.priority + ")";;
         }
         return result;
+    }
+    equals(that) {
+        if (this.id === that.id) {
+            return true;
+        }
+        return false;
     }
 }
 class LinkedNode {
@@ -41,6 +59,31 @@ class LinkedNode {
     addChild(node) {
         this.children.push(node);
     }
+    listDeep() {
+        if (this.children.length == 0) {
+            return [this];
+        }
+        var list = [this];
+        this.children.forEach(function(childNode) {
+            list = list.concat(childNode.listDeep());
+        });
+        return list;
+    }
+    listWide() {
+        if (this.children.length == 0) {
+            return [this];
+        }
+        var list = [];
+        var searchList = [this];
+        while (searchList.length > 0) {
+            var node = searchList.shift();
+            list.push(node);
+            node.children.forEach(function(childNode) {
+                searchList.push(childNode);
+            });
+        }
+        return list;
+    }
 }
 class GoalLinkedNode extends LinkedNode {
     constructor(title, parentNode) {
@@ -54,6 +97,6 @@ class GoalLinkedNode extends LinkedNode {
         }
     }
     addItem(title) {
-        return new GoalLinkedNode(new GoalItem(title), this);
+        return new GoalLinkedNode(title, this);
     }
 }
