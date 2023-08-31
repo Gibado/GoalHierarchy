@@ -1,30 +1,29 @@
-var HierarchyController = function(model) {
-    var self = {};
-    self.model = model;
-
-    self.UpdateDisplay = function() {
+class HierarchyController {
+    constructor(model) {
+        this.model = model;
+    }
+    UpdateDisplay() {
         var display = document.getElementById("display");
         // Clear existing
-        while(display.children.length > 0) {
+        while (display.children.length > 0) {
             display.children[0].remove();
         }
 
-        var rootDisplay = self.createDisplay(self.model.root);
+        var rootDisplay = this.createDisplay(this.model.root);
         display.append(rootDisplay);
-        
     }
-
-    self.createDisplay = function(node) {
+    createDisplay(node) {
         var div = document.createElement("div");
         div.className = "action-item"
         var title = document.createElement("p");
-        title.textContent = node.Title;
+        title.textContent = node.data.toString();
         div.append(title);
 
-        if (node.NodeList.length > 0) {
+        var self = this;
+        if (node.children.length > 0) {
             div.className = "goal"
             var list = document.createElement("ol");
-            self.model.root.NodeList.forEach(function(childNode) {
+            node.children.forEach(function(childNode) {
                 var item = document.createElement('li');
                 item.append(self.createDisplay(childNode));
                 list.append(item);
@@ -34,11 +33,9 @@ var HierarchyController = function(model) {
 
         return div;
     }
-
-    return self;
 }
 
-var hModel = HierarchyModel();
-var hController = HierarchyController(hModel);
+var hModel = new HierarchyModel();
+var hController = new HierarchyController(hModel);
 
 hController.UpdateDisplay();
