@@ -14,39 +14,29 @@ class HierarchyController {
         this.updateSelect();
     }
     createDisplay(node) {
-        var li = document.createElement('li');
-        li.className = 'list-group-item d-flex justify-content-between align-items-start';
+        var li = document.getElementById('itemTemplate').cloneNode(true);
         li.id = node.data.id;
         var type = node.type();
         li.className += ' ' + type;
 
-        var info = document.createElement('div');
-        info.className = 'ms-2 me-auto';
-        li.append(info);
-        var title = document.createElement('div');
-        title.className = 'fw-bold';
+        var title = li.getElementsByClassName('title')[0];
         title.textContent = node.data.title;
-        info.append(title);
 
         if (TypeEnum.GOAL == type) {
-            var ol = document.createElement('ol');
-            ol.className = 'list-group list-group-numbered';
+            var ol = li.getElementsByClassName('item-list')[0];
             var self = this;
             node.children.forEach(function(childNode) {
                 ol.append(self.createDisplay(childNode));
             });
-            info.append(ol);
         }
 
-        var priority = document.createElement('span');
-        priority.className = 'badge bg-primary rounded-pill';
+        var priority = li.getElementsByClassName('priority')[0];
+
         var pillValue = node.data.priority;
         if (pillValue == undefined) {
-            pillValue = '-';
+            pillValue = 0;
         }
         priority.textContent = pillValue.toString();
-        li.append('\xa0');
-        li.append(priority);
 
         return li;
     }
@@ -72,6 +62,13 @@ class HierarchyController {
         hModel.deleteItem(itemId);
         this.updateDisplay();
     }
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var targetId = ev.dataTransfer.getData("targetId");
+    console.log('Dropping: ' + targetId);
+    //ev.target.appendChild(document.getElementById(targetId));
 }
 
 var hModel = new HierarchyModel();

@@ -30,17 +30,20 @@
         </div>
         <div class="row">
             <div class="col-auto">
-                <ol id="display-list" class="list-group list-group-numbered">
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">Subheading</div>
-                            Content for list item
-                        </div>
-                        <span class="badge bg-primary rounded-pill">14</span>
-                    </li>
-                </ol>
+                <ol id="display-list" class="list-group list-group-numbered"></ol>
             </div>
         </div>
+    </div>
+
+    <div id="templates" hidden>
+        <li id='itemTemplate' class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold title">Title</div>
+                <ol class="list-group list-group-numbered item-list"></ol>
+            </div>
+            &nbsp;
+            <span class="badge bg-primary rounded-pill priority">-</span>
+        </li>
     </div>
 
     <!-- Run scripts after loading -->
