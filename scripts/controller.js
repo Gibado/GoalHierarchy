@@ -35,7 +35,7 @@ class HierarchyController {
 
         var pillValue = node.data.priority;
         if (pillValue == undefined) {
-            pillValue = 0;
+            pillValue = '-';
         }
         priority.textContent = pillValue.toString();
 
