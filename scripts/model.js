@@ -17,6 +17,11 @@ class HierarchyModel {
         }
         item.delete();
     }
+    moveItem(itemId, newParentId) {
+        var item = this.findItemById(itemId);
+        var newParent = this.findItemById(newParentId);
+        item.changeParent(newParent);
+    }
     getItemList() {
         return this.root.listWide();
     }
@@ -32,8 +37,8 @@ class HierarchyModel {
 
 // Data structures
 const TypeEnum = {
-    GOAL: 1,
-    ACTION_ITEM: 2
+    GOAL: 'GOAL',
+    ACTION_ITEM: 'ACTION_ITEM'
 }
 class GoalItem {
     constructor(title, priority) {
@@ -82,6 +87,14 @@ class LinkedNode {
     }
     addChild(node) {
         this.children.push(node);
+    }
+    changeParent(newParent) {
+        if (this.parent != undefined && this.parent != null) {
+            // remove self from parent
+            this.parent.children = this.parent.children.filter(child => !child.equals(this));
+        }
+        newParent.addChild(this);
+        this.parent = newParent;
     }
     listDeep() {
         if (this.children.length == 0) {
