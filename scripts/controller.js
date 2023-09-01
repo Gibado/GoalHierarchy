@@ -21,6 +21,7 @@ class HierarchyController {
 
         var title = li.getElementsByClassName('title')[0];
         title.textContent = node.data.title;
+        title.id = node.data.id;
 
         if (TypeEnum.GOAL == type) {
             var ol = li.getElementsByClassName('item-list')[0];
@@ -62,13 +63,17 @@ class HierarchyController {
         hModel.deleteItem(itemId);
         this.updateDisplay();
     }
-}
-
-function drop(ev) {
-    ev.preventDefault();
-    var targetId = ev.dataTransfer.getData("targetId");
-    console.log('Dropping: ' + targetId);
-    //ev.target.appendChild(document.getElementById(targetId));
+    changeParent(itemId, newParentId) {
+        hModel.moveItem(itemId, newParentId);
+    }
+    dropEvent(ev) {
+        ev.preventDefault();
+        var targetId = ev.dataTransfer.getData("targetId");
+        var landingId = ev.target.id;
+        console.debug('Dropping: ' + targetId + ' on: ' + landingId);
+        this.changeParent(targetId, landingId);
+        this.updateDisplay();
+    }
 }
 
 var hModel = new HierarchyModel();
