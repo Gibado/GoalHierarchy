@@ -50,6 +50,11 @@ class HierarchyController {
     createItem(title, parentId) {
         var parent = hModel.findItemById(parentId);
         hModel.addItem(title, parent);
+        this.updateDisplay();
+    }
+    deleteItem(itemId) {
+        hModel.deleteItem(itemId);
+        this.updateDisplay();
     }
 }
 
@@ -62,7 +67,15 @@ createButton.onclick = function() {
     var title = document.getElementById('item-text').value;
     var parentId = parseFloat(document.getElementById('goal-select').selectedOptions[0].value);
     hController.createItem(title, parentId);
-    hController.updateDisplay();
+}
+var deleteButton = document.getElementById('delete-button');
+deleteButton.onclick = function() {
+    var itemId = parseFloat(document.getElementById('goal-select').selectedOptions[0].value);
+    var success = hController.deleteItem(itemId);
+    if (!success) {
+        var item = hModel.findItemById(itemId);
+        console.error("Couldn't delete item: " + item.toString())
+    }
 }
 
 hController.updateDisplay();

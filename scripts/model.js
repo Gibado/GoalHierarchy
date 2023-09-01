@@ -9,6 +9,14 @@ class HierarchyModel {
         }
         return pNode.addItem(title);
     }
+    deleteItem(itemId) {
+        var item = this.findItemById(itemId);
+        if (this.root.equals(item)) {
+            // Can't delete root
+            return false;
+        }
+        item.delete();
+    }
     getItemList() {
         return this.root.listWide();
     }
@@ -56,6 +64,22 @@ class LinkedNode {
             this.parent.addChild(this);
         }
     }
+    delete() {
+        if (this.parent != undefined && this.parent != null) {
+            // remove self from parent
+            this.parent.children = this.parent.children.filter(child => child !== this);
+            // Give children to parent
+            this.parent.children = this.parent.children.concat(this.children);
+        }
+        // point children to new parent
+        var self = this;
+        this.children.forEach(function(child) {
+            child.parent = self.parent;
+        });
+        // Remove connections
+        this.parent = null;
+        this.children = [];
+    }
     addChild(node) {
         this.children.push(node);
     }
@@ -98,5 +122,11 @@ class GoalLinkedNode extends LinkedNode {
     }
     addItem(title) {
         return new GoalLinkedNode(title, this);
+    }
+    equals(glNode) {
+        return this.data.equals(glNode.data);
+    }
+    toString() {
+        return this.data.toString();
     }
 }
