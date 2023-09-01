@@ -31,4 +31,5 @@ Single page site to help prioritize and identify which actions should be taken 1
     4. Prioritize each goal layer against it's children based on how much it will help achieve the parent goal
     5. Prioritize the full action item list against each bottom goal base on how much it will help achieve that goal
     6. Now the Action Items have a cross-goal hierarchy
-2. Beautify the interface
+2. Can save state between sessions
+3. Beautify the interface
