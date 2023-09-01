@@ -16,6 +16,7 @@ class HierarchyModel {
             return false;
         }
         item.delete();
+        return true;
     }
     moveItem(itemId, newParentId) {
         var item = this.findItemById(itemId);
