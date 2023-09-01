@@ -32,8 +32,8 @@ class HierarchyModel {
 
 // Data structures
 const TypeEnum = {
-    GOAL: 1,
-    ACTION_ITEM: 2
+    GOAL: 'GOAL',
+    ACTION_ITEM: 'ACTION_ITEM'
 }
 class GoalItem {
     constructor(title, priority) {

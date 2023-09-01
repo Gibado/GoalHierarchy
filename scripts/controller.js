@@ -3,7 +3,7 @@ class HierarchyController {
         this.model = model;
     }
     updateDisplay() {
-        var display = document.getElementById("display");
+        var display = document.getElementById("display-list");
         // Clear existing
         while (display.children.length > 0) {
             display.children[0].remove();
@@ -14,25 +14,41 @@ class HierarchyController {
         this.updateSelect();
     }
     createDisplay(node) {
-        var div = document.createElement("div");
-        div.className = "action-item"
-        var title = document.createElement("p");
-        title.textContent = node.data.toString();
-        div.append(title);
+        var li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-start';
+        li.id = node.data.id;
+        var type = node.type();
+        li.className += ' ' + type;
 
-        var self = this;
-        if (node.children.length > 0) {
-            div.className = "goal"
-            var list = document.createElement("ol");
+        var info = document.createElement('div');
+        info.className = 'ms-2 me-auto';
+        li.append(info);
+        var title = document.createElement('div');
+        title.className = 'fw-bold';
+        title.textContent = node.data.title;
+        info.append(title);
+
+        if (TypeEnum.GOAL == type) {
+            var ol = document.createElement('ol');
+            ol.className = 'list-group list-group-numbered';
+            var self = this;
             node.children.forEach(function(childNode) {
-                var item = document.createElement('li');
-                item.append(self.createDisplay(childNode));
-                list.append(item);
-            })
-            div.append(list);
+                ol.append(self.createDisplay(childNode));
+            });
+            info.append(ol);
         }
 
-        return div;
+        var priority = document.createElement('span');
+        priority.className = 'badge bg-primary rounded-pill';
+        var pillValue = node.data.priority;
+        if (pillValue == undefined) {
+            pillValue = '-';
+        }
+        priority.textContent = pillValue.toString();
+        li.append('\xa0');
+        li.append(priority);
+
+        return li;
     }
     updateSelect() {
         var select = document.getElementById('goal-select');
