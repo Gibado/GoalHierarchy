@@ -26,7 +26,7 @@ Single page site to help prioritize and identify which actions should be taken 1
 # Roadmap
 1. Have the functionality to perform all 6 steps
     1. ~~Define some goals~~
-    2. Organize your goals
+    2. ~~Organize your goals~~
     3. Define actions for each goal
     4. Prioritize each goal layer against it's children based on how much it will help achieve the parent goal
     5. Prioritize the full action item list against each bottom goal base on how much it will help achieve that goal

@@ -3,7 +3,7 @@ class HierarchyController {
         this.model = model;
     }
     updateDisplay() {
-        var display = document.getElementById("display");
+        var display = document.getElementById("display-list");
         // Clear existing
         while (display.children.length > 0) {
             display.children[0].remove();
@@ -14,25 +14,32 @@ class HierarchyController {
         this.updateSelect();
     }
     createDisplay(node) {
-        var div = document.createElement("div");
-        div.className = "action-item"
-        var title = document.createElement("p");
-        title.textContent = node.data.toString();
-        div.append(title);
+        var li = document.getElementById('itemTemplate').cloneNode(true);
+        li.id = node.data.id;
+        var type = node.type();
+        li.className += ' ' + type;
 
-        var self = this;
-        if (node.children.length > 0) {
-            div.className = "goal"
-            var list = document.createElement("ol");
+        var title = li.getElementsByClassName('title')[0];
+        title.textContent = node.data.title;
+        title.id = node.data.id;
+
+        if (TypeEnum.GOAL == type) {
+            var ol = li.getElementsByClassName('item-list')[0];
+            var self = this;
             node.children.forEach(function(childNode) {
-                var item = document.createElement('li');
-                item.append(self.createDisplay(childNode));
-                list.append(item);
-            })
-            div.append(list);
+                ol.append(self.createDisplay(childNode));
+            });
         }
 
-        return div;
+        var priority = li.getElementsByClassName('priority')[0];
+
+        var pillValue = node.data.priority;
+        if (pillValue == undefined) {
+            pillValue = 0;
+        }
+        priority.textContent = pillValue.toString();
+
+        return li;
     }
     updateSelect() {
         var select = document.getElementById('goal-select');
@@ -54,6 +61,17 @@ class HierarchyController {
     }
     deleteItem(itemId) {
         hModel.deleteItem(itemId);
+        this.updateDisplay();
+    }
+    changeParent(itemId, newParentId) {
+        hModel.moveItem(itemId, newParentId);
+    }
+    dropEvent(ev) {
+        ev.preventDefault();
+        var targetId = ev.dataTransfer.getData("targetId");
+        var landingId = ev.target.id;
+        console.debug('Dropping: ' + targetId + ' on: ' + landingId);
+        this.changeParent(targetId, landingId);
         this.updateDisplay();
     }
 }
