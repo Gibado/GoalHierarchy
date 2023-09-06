@@ -35,7 +35,7 @@ class HierarchyController {
 
         var pillValue = node.data.priority;
         if (pillValue == undefined) {
-            pillValue = 0;
+            pillValue = '-';
         }
         priority.textContent = pillValue.toString();
 
@@ -64,7 +64,10 @@ class HierarchyController {
         this.updateDisplay();
     }
     changeParent(itemId, newParentId) {
-        hModel.moveItem(itemId, newParentId);
+        var error = hModel.moveItem(itemId, newParentId);
+        if (error != undefined) {
+            console.error(error);
+        }
     }
     dropEvent(ev) {
         ev.preventDefault();

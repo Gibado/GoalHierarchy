@@ -16,8 +16,12 @@ class HierarchyModel {
             return false;
         }
         item.delete();
+        return true;
     }
     moveItem(itemId, newParentId) {
+        if (itemId == newParentId) {
+            return { error: "Cannot make circular goals" };
+        }
         var item = this.findItemById(itemId);
         var newParent = this.findItemById(newParentId);
         item.changeParent(newParent);
